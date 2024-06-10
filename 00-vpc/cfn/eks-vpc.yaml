@@ -178,7 +178,7 @@ Resources:
       Tags:
       - Key: Name
         Value: !Sub "${AWS::StackName}-PublicSubnet01"
-      - Key: kubernetes.io/role/elb
+      - Key: kubernetes.io/role/elb #required to deploy LBs
         Value: 1
 
   PublicSubnet02:
