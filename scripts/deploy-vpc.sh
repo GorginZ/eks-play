@@ -6,7 +6,7 @@ stackname="eks-vpc"
 appname="eks-play"
 
 docker compose run aws cloudformation deploy \
-      --template-file 00-vpc/cfn/eks-vpc.yaml \
+      --template-file ../00-vpc/cfn/eks-vpc.yaml \
       --stack-name $stackname \
       --parameter-overrides \
         Name=$appname \
