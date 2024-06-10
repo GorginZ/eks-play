@@ -5,11 +5,10 @@ locals {
 
 module "ec2_instance" {
   source                 = "terraform-aws-modules/ec2-instance/aws"
-  ami                    = "ami-00c7b43f560228d50"
+  ami                    = "ami-09b42976632b27e9b"
   name                   = "eks-play-bastion"
   iam_instance_profile   = aws_iam_instance_profile.bastion-host-instance-profile.name
   instance_type          = "t2.nano"
-  key_name               = "user1"
   monitoring             = true
   vpc_security_group_ids = local.bastion_instance_security_group_ids
   subnet_id              = var.subnet_ids[0] #not nicest but private sn a1 
