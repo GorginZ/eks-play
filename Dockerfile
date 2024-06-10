@@ -6,4 +6,6 @@ RUN mv terraform /usr/bin/terraform
 
 #install git for getting some tf modules
 RUN apk add --no-cache git
-CMD ["git","--version"]
+
+#install aws-cli
+RUN apk add --no-cache aws-cli

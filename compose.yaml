@@ -5,6 +5,7 @@ services:
     &ci-infra
     volumes:
       - .:/tf-eks
+      - $HOME/.aws/credentials:/root/.aws/credentials 
     working_dir: /tf-eks
     build:
       context: .
@@ -13,3 +14,7 @@ services:
   terraform:
     <<: *ci-infra
     entrypoint: terraform
+
+  aws:
+    <<: *ci-infra
+    entrypoint: aws
