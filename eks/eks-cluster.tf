@@ -60,16 +60,15 @@ module "eks" {
 
   access_entries = {
     # One access entry with a policy associated
-    example = {
+    admin = {
       kubernetes_groups = []
-      principal_arn     = "arn:aws:iam::${var.account_id}:group/Administrators" #idk if this takes a group but let's see
+      principal_arn     = "arn:aws:iam::${var.account_id}:role/k8s-admin" #click-opsed this role and policy will iac it after I try this out
 
       policy_associations = {
-        example = {
-          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSViewPolicy"
+        admin = {
+          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
           access_scope = {
-            namespaces = ["default"]
-            type       = "namespace"
+            type       = "cluster"
           }
         }
       }
