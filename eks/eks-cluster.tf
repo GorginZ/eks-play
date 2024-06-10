@@ -2,11 +2,11 @@
 locals {
   name            = "eks-play"
   cluster_version = "1.29"
-#   region          = "ap-southeast-2"
-#   azs      = slice(var.aws_availability_zones.available.names, 0, 2)
+  #   region          = "ap-southeast-2"
+  #   azs      = slice(var.aws_availability_zones.available.names, 0, 2)
 
   tags = {
-    Example    = local.name
+    Example = local.name
   }
 }
 
@@ -14,11 +14,11 @@ module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 20.0"
 
-  cluster_name    = local.name 
+  cluster_name    = local.name
   cluster_version = local.cluster_version
 
-  cluster_endpoint_public_access  = false #CIS
-  cluster_endpoint_public_access_cidrs = [] #ah none thanks
+  cluster_endpoint_public_access       = false #CIS
+  cluster_endpoint_public_access_cidrs = []    #ah none thanks
 
   cluster_addons = {
     coredns = {
@@ -32,11 +32,11 @@ module "eks" {
     }
   }
 
-  vpc_id                   = var.vpc_id
-  subnet_ids               = var.subnet_ids 
-#   cluster_service_ipv4_cidr = let's see what it gives me first 
-#   control_plane_subnet_ids = var.control_plane_subnet_ids  if ommitted uses subnet_ids
-  cluster_additional_security_group_ids = var.security_group_ids 
+  vpc_id     = var.vpc_id
+  subnet_ids = var.subnet_ids
+  #   cluster_service_ipv4_cidr = let's see what it gives me first 
+  #   control_plane_subnet_ids = var.control_plane_subnet_ids  if ommitted uses subnet_ids
+  cluster_additional_security_group_ids = var.security_group_ids
 
   # EKS Managed Node Group(s)
   eks_managed_node_group_defaults = {
@@ -46,7 +46,7 @@ module "eks" {
   eks_managed_node_groups = {
     example = {
       min_size     = 1
-      max_size     = 2 
+      max_size     = 2
       desired_size = 1
 
       instance_types = ["t3.micro"]
@@ -68,7 +68,7 @@ module "eks" {
         admin = {
           policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
           access_scope = {
-            type       = "cluster"
+            type = "cluster"
           }
         }
       }
