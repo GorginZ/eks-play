@@ -20,3 +20,16 @@ TF init
 We'll just use local backend for now.
 
 ```docker compose run terraform -chdir=eks init```
+
+Plan:
+
+```docker compose run terraform -chdir=eks plan -var-file eks-play.tfvars```
+
+review the plan
+
+Apply:
+
+```docker compose run terraform -chdir=eks apply -var-file eks-play.tfvars```
+yes when prompted
+
+---
