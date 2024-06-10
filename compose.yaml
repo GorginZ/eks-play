@@ -1,0 +1,15 @@
+---
+version: '3.4'
+services:
+  ci-infra:
+    &ci-infra
+    volumes:
+      - .:/tf-eks
+    working_dir: /tf-eks
+    build:
+      context: .
+      target: ci-infra
+
+  terraform:
+    <<: *ci-infra
+    entrypoint: terraform
