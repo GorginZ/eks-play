@@ -5,7 +5,7 @@ set -euou pipefail
 stackname="eks-vpc"
 appname="eks-play"
 
-aws cloudformation deploy \
+docker compose run aws cloudformation deploy \
       --template-file 00-vpc/cfn/eks-vpc.yaml \
       --stack-name $stackname \
       --parameter-overrides \
