@@ -13,4 +13,10 @@ Deploy VPC.
 
 This deploys a basic subnet that meets the networking requirements for an EKS cluster.
 
+---
 
+TF init
+
+We'll just use local backend for now.
+
+```docker compose run terraform -chdir=eks init```
