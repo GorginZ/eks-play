@@ -11,7 +11,7 @@ module "ec2_instance" {
   instance_type          = "t2.nano"
   monitoring             = true
   vpc_security_group_ids = local.bastion_instance_security_group_ids
-  subnet_id              = var.subnet_ids[0] #not nicest but private sn a1 
+  subnet_id              = var.private_subnet_ids[0] #not nicest but private sn a1 
   user_data              = <<EOF
   #!/bin/bash
   sudo su
@@ -52,32 +52,33 @@ resource "aws_vpc_security_group_egress_rule" "allow_all_traffic_ipv4" {
   ip_protocol       = "-1" # semantically equivalent to all ports
 }
 
-#SSMEndpoint
-resource "aws_vpc_endpoint" "ssm" {
-  vpc_id             = var.vpc_id
-  service_name       = "com.amazonaws.${var.region}.ssm"
-  vpc_endpoint_type  = "Interface"
-  security_group_ids = [aws_security_group.allow_vpc_all.id]
-  subnet_ids         = var.private_subnet_ids
-}
+#TODO I don't actually need these endpoints while NACLs are open, I thought SSM was external to vpc and INITIATING the session so wouldn't get in without them (bc NAT is one way...) but they failed to deploy and I was able to start an SSM session... remove them for now may add tight nacls later for fun
+# #SSMEndpoint
+# resource "aws_vpc_endpoint" "ssm" {
+#   vpc_id             = var.vpc_id
+#   service_name       = "com.amazonaws.${var.region}.ssm"
+#   vpc_endpoint_type  = "Interface"
+#   security_group_ids = [aws_security_group.allow_vpc_all.id]
+#   subnet_ids         = var.private_subnet_ids
+# }
 
-#SSMMessages
-resource "aws_vpc_endpoint" "ssm_messages" {
-  vpc_id             = var.vpc_id
-  service_name       = "com.amazonaws.${var.region}.ssmmessages"
-  vpc_endpoint_type  = "Interface"
-  security_group_ids = [aws_security_group.allow_vpc_all.id]
-  subnet_ids         = var.private_subnet_ids
-}
+# #SSMMessages
+# resource "aws_vpc_endpoint" "ssm_messages" {
+#   vpc_id             = var.vpc_id
+#   service_name       = "com.amazonaws.${var.region}.ssmmessages"
+#   vpc_endpoint_type  = "Interface"
+#   security_group_ids = [aws_security_group.allow_vpc_all.id]
+#   subnet_ids         = var.private_subnet_ids
+# }
 
-#EC2Messages
-resource "aws_vpc_endpoint" "ec2_messages" {
-  vpc_id             = var.vpc_id
-  service_name       = "com.amazonaws.${var.region}.ec2messages"
-  vpc_endpoint_type  = "Interface"
-  security_group_ids = [aws_security_group.allow_vpc_all.id]
-  subnet_ids         = var.private_subnet_ids
-}
+# #EC2Messages
+# resource "aws_vpc_endpoint" "ec2_messages" {
+#   vpc_id             = var.vpc_id
+#   service_name       = "com.amazonaws.${var.region}.ec2messages"
+#   vpc_endpoint_type  = "Interface"
+#   security_group_ids = [aws_security_group.allow_vpc_all.id]
+#   subnet_ids         = var.private_subnet_ids
+# }
 
 
 
