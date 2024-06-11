@@ -27,6 +27,14 @@ variable "subnet_ids" {
   description = "Subnets for the EKS cluster, providing the private subnets for nodes"
 }
 
+variable "private_subnet_ids" {
+  type = list(string)
+}
+
+variable "public_subnet_ids" {
+  type = list(string)
+}
+
 variable "control_plane_subnet_ids" {
   type = list(string)
 }
