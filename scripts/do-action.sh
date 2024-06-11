@@ -1,6 +1,19 @@
 #!/usr/bin/env bash
 set -euou pipefail
 
+usage() {
+  echo "Usage: $0 <action>"
+  echo "Actions:"
+  echo "  deploy-eks-vpc: Deploy the EKS VPC stack"
+  echo "  seed-eks-play-tfvars-file: Seed the eks-play.tfvars file with the VPC stack outputs"
+  echo "  deploy-eks-cluster: Deploy the EKS cluster"
+}
+
+if [ "$#" -ne 1 ]; then
+  usage
+  exit 1
+fi
+
 #need these to populate eks-play.tfvars file
 get_vpc_stack_outputs() {
   vpc_id=$(docker compose run aws cloudformation describe-stacks --region ap-southeast-2 \
