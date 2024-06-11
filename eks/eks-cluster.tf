@@ -2,6 +2,7 @@
 locals {
   name            = "eks-play"
   cluster_version = "1.29"
+  cluster_additional_security_group_ids = concat(var.security_group_ids, [aws_security_group.allow_vpc_all.id]) #allow all vpc for now just so I can use my bastion easily
   #   region          = "ap-southeast-2"
   #   azs      = slice(var.aws_availability_zones.available.names, 0, 2)
 
@@ -36,7 +37,7 @@ module "eks" {
   subnet_ids = var.private_subnet_ids
   #   cluster_service_ipv4_cidr = let's see what it gives me first 
   #   control_plane_subnet_ids = var.control_plane_subnet_ids  if ommitted uses subnet_ids
-  cluster_additional_security_group_ids = var.security_group_ids
+  cluster_additional_security_group_ids = local.bastion_instance_security_group_ids 
 
   # EKS Managed Node Group(s)
   eks_managed_node_group_defaults = {
