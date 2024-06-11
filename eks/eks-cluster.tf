@@ -33,7 +33,7 @@ module "eks" {
   }
 
   vpc_id     = var.vpc_id
-  subnet_ids = var.subnet_ids
+  subnet_ids = var.private_subnet_ids
   #   cluster_service_ipv4_cidr = let's see what it gives me first 
   #   control_plane_subnet_ids = var.control_plane_subnet_ids  if ommitted uses subnet_ids
   cluster_additional_security_group_ids = var.security_group_ids

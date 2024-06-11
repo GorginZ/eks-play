@@ -14,6 +14,7 @@ module "ec2_instance" {
   subnet_id              = var.subnet_ids[0] #not nicest but private sn a1 
   user_data              = <<EOF
   #!/bin/bash
+  sudo su
   yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
   start amazon-ssm-agent
   #install kubectl
@@ -57,7 +58,7 @@ resource "aws_vpc_endpoint" "ssm" {
   service_name       = "com.amazonaws.${var.region}.ssm"
   vpc_endpoint_type  = "Interface"
   security_group_ids = [aws_security_group.allow_vpc_all.id]
-  subnet_ids         = var.subnet_ids
+  subnet_ids         = var.private_subnet_ids
 }
 
 #SSMMessages
@@ -66,7 +67,7 @@ resource "aws_vpc_endpoint" "ssm_messages" {
   service_name       = "com.amazonaws.${var.region}.ssmmessages"
   vpc_endpoint_type  = "Interface"
   security_group_ids = [aws_security_group.allow_vpc_all.id]
-  subnet_ids         = var.subnet_ids
+  subnet_ids         = var.private_subnet_ids
 }
 
 #EC2Messages
@@ -75,7 +76,7 @@ resource "aws_vpc_endpoint" "ec2_messages" {
   service_name       = "com.amazonaws.${var.region}.ec2messages"
   vpc_endpoint_type  = "Interface"
   security_group_ids = [aws_security_group.allow_vpc_all.id]
-  subnet_ids         = var.subnet_ids
+  subnet_ids         = var.private_subnet_ids
 }
 
 
