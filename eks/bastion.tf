@@ -5,7 +5,7 @@ locals {
 
 module "ec2_instance" {
   source                 = "terraform-aws-modules/ec2-instance/aws"
-  ami                    = "ami-09b42976632b27e9b"
+  ami                    = "ami-0e326862c8e74c0fe"
   name                   = "eks-play-bastion"
   iam_instance_profile   = aws_iam_instance_profile.bastion-host-instance-profile.name
   instance_type          = "t2.nano"
