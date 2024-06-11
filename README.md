@@ -2,12 +2,14 @@
 
 Status: WIP - bastion still can't reach private endpoint
 
-play around spinning up an eks cluster with terraform.
+Deploy a basic EKS cluster.
+
+- deploy VPC that meets the EKS networkign requirements with aws cloudformation
+- deploy EKS cluster with terraform
 
 Required:
 - [docker](https://www.docker.com/)
 - an aws account
-
 
 ## Usage
 
@@ -17,15 +19,15 @@ Required:
 
 ## Set up
 
-create a ```eks/eks-play.tfvars``` file and populate with values as required by ```eks/variables.tf```
+Most dependencies are managed in the ```compose.yaml``` and respective Dockerfile, this has a couple of services so that you don't have to install terraform or aws-cli.
 
-take a look at the ```compose.yaml```, this has a couple of services so that you don't have to install terraform or aws-cli.
+We'll use the ```scripts/do-action.sh <action>``` to roll out deployment, which calls the compose service as needed.
 
 configure programmatic access for aws-cli:
 - [granting programmatic access](https://docs.aws.amazon.com/workspaces-web/latest/adminguide/getting-started-iam-user-access-keys.html)
 - [setting up the aws cli](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-quickstart.html)
 
-Verify aws cli picks up creds okay:
+Verify aws cli picks up creds okay with the compose:
 
 ```bash
 docker compose run aws iam list-users
@@ -38,37 +40,49 @@ If it works it works
 ## Deploy VPC and other EKS networking resources
 
 ```bash
-./scripts/deploy-vpc.sh
+./scripts/do-action.sh deploy-eks-vpc
 ```
 
 This deploys a basic subnet that meets the networking requirements for an EKS cluster.
+
+
+## Configure your tfvars
+
+This will get the outputs from the VPC cloudformation stack. Fill in the rest yourself:
+
+```bash
+./scripts/do-action.sh seed-tfvars-file 
+```
 
 ---
 
 ## Deploy the EKS cluster and bastion
 
+
 We'll just use a local tf backend for now.
-
-```bash
-docker compose run terraform -chdir=eks init
-```
-
-Plan:
+Do a plan first if you'd like:
 
 ```bash
 docker compose run terraform -chdir=eks plan -var-file eks-play.tfvars
 ```
 
-review the plan
-
-Apply:
+Deploy:
 
 ```bash
-docker compose run terraform -chdir=eks apply -var-file eks-play.tfvars
+./scripts/do-action.sh deploy-eks-cluster
 ```
 yes when prompted
 
 ---
+
+Now you can connect to the bastion instance with Session Manager and reach the cluster once you authenticate.
+
+Run:
+
+```bash
+aws configure
+```
+
 
 # don't forget to clean up
 
