@@ -56,7 +56,7 @@ case $action in
           --no-fail-on-empty-changeset
     echo "Deployed $stackname stack"
     ;;
-  "seed-eks-play-tfvars-file")
+  "seed-tfvars-file")
     get_vpc_stack_outputs
     echo vpc_id = \"$vpc_id\" >> ./eks/eks-play.tfvars
     #need to split these so it can be used as a list in terraform like ["subnet-1", "subnet-2"] ugly but make things faster us when tearing down/bringing up
