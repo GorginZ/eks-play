@@ -16,6 +16,10 @@ module "ec2_instance" {
   #!/bin/bash
   yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
   start amazon-ssm-agent
+  #install kubectl
+  curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.18.9/2020-11-02/bin/linux/amd64/kubectl
+  chmod +x ./kubectl
+  mv ./kubectl /usr/local/bin/kubectl
   EOF
 
   tags = {
