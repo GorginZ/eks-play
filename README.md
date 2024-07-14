@@ -98,3 +98,10 @@ aws cloudformation delete-stack --stack-name=eks-vpc;
 ```
 
 double check in console 
+
+---
+
+
+TODO:
+
+- bastion endpoint
